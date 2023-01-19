@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
-const AddContact = ({ onAddNewContact }) => {
-  const [name, setName] = useState("John Doe");
-  const [phone, setPhone] = useState("+xx(xx)xx-xx-xxx");
-  const [email, setEmail] = useState("email@email.com");
-  const [avatar, setAvatar] = useState(0);
-  const [gender, setGender] = useState("men");
-  const [category, setCategory] = useState("Friends");
+const EditContact = ({ selectedContact, onEditContact}) => {
+  console.log("EditContact ", selectedContact);
+  const [name, setName] = useState(selectedContact.name);
+  const [phone, setPhone] = useState(selectedContact.phone);
+  const [email, setEmail] = useState(selectedContact.email);
+  const [avatar, setAvatar] = useState(selectedContact.avatar);
+  const [gender, setGender] = useState(selectedContact.gender);
+  const [category, setCategory] = useState(selectedContact.category);
   const [isRedirect, setIsRedicrect] = useState(false);
 
   const onGetName = (event) => {
@@ -30,10 +31,10 @@ const AddContact = ({ onAddNewContact }) => {
     setCategory(event.target.value);
   };
 
-  const onSave = (event) => {
+  const onUpdate = (event) => {
     event.preventDefault();
 
-    const newContact = {
+    let changedContact = {
       id: uuidv4(),
       name,
       phone,
@@ -42,7 +43,8 @@ const AddContact = ({ onAddNewContact }) => {
       gender,
       category,
     };
-    onAddNewContact(newContact);
+    console.log("changedContact in edit :: ", changedContact);
+    onEditContact(changedContact, selectedContact.id);
     setIsRedicrect(true);
   };
 
@@ -56,8 +58,8 @@ const AddContact = ({ onAddNewContact }) => {
     <>
       <div className="row">
         <div className="col-7">
-          <h2>Add new contact</h2>
-          <form onSubmit={onSave}>
+          <h2>Edit contact</h2>
+          <form onSubmit={onUpdate}>
             <div className="mb-3">
               <label className="form-label">Name</label>
               <input
@@ -129,7 +131,7 @@ const AddContact = ({ onAddNewContact }) => {
               </select>
             </div>
             <button type="submit" className="btn btn-primary">
-              Save
+              Update
             </button>
           </form>{" "}
         </div>
@@ -146,4 +148,4 @@ const AddContact = ({ onAddNewContact }) => {
   );
 };
 
-export default AddContact;
+export default EditContact;

@@ -3,37 +3,41 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 import React from "react";
+import { Link } from "react-router-dom";
 
-const GetCategoriesStyle = (category) => 
-{
-  let categoryStyle = "lab lab-success";
+const GetCaregoryStyle = (category) => {
+  let categoryStyle = "lab lab-success field";
   switch (category) {
     case "Work":
-      categoryStyle = "lab lab-success";
+      categoryStyle = "lab lab-success field";
       break;
     case "Family":
-      categoryStyle = "lab lab-primary";
+      categoryStyle = "lab lab-primary field";
       break;
     case "Private":
-      categoryStyle = "lab lab-danger";
+      categoryStyle = "lab lab-danger field";
       break;
     default:
-      categoryStyle = "lab lab-warning";
+      categoryStyle = "lab lab-warning field";
       break;
   }
+
   return categoryStyle;
-}
+};
 
-const ContactItem = ({ name, phone, email, category, avatar, onDelete, gender }) => {
-  
+const ContactItem = ({
+  name,
+  phone,
+  email,
+  category,
+  avatar,
+  gender,
+  onDelete,
+  onSelectContact,
+}) => {
+  const URL = `https://randomuser.me/api/portraits/${gender}/${avatar}.jpg`;
 
-  let randomAvatar = ``;
-  switch(gender)
-  {
-    case "female": randomAvatar = `https://randomuser.me/api/portraits/women/${avatar}.jpg`;
-    case "male": randomAvatar = `https://randomuser.me/api/portraits/men/${avatar}.jpg`;
-  }
-  
+  const categoryStyle = GetCaregoryStyle(category);
 
   return (
     <div className="unit">
@@ -44,14 +48,23 @@ const ContactItem = ({ name, phone, email, category, avatar, onDelete, gender })
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
         <div>
-          <img src={randomAvatar} alt="image" className="avatar" /> {name}
+          <img src={URL} alt="image" className="avatar" /> {name}
         </div>
-        <div className={GetCategoriesStyle(category)}>{category}</div>
+        <div className={categoryStyle}>{category}</div>
       </div>
       <div className="field phone">{phone}</div>
       <div className="field email">{email}</div>
       <div className="field icons-wrapper">
-        <FontAwesomeIcon icon={faEdit} size="2x" className="icons edit" />
+        <Link to={"/edit-contact"}>
+          {" "}
+          <FontAwesomeIcon
+            icon={faEdit}
+            size="2x"
+            onClick={onSelectContact}
+            className="icons edit"
+          />
+        </Link>
+
         <FontAwesomeIcon
           onClick={onDelete}
           icon={faTrashAlt}
