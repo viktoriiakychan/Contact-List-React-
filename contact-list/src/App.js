@@ -12,6 +12,11 @@ import EditContact from "./contacts/editContact/editContact";
 import NotFound from "./contacts/notFound404/notFound";
 import { v4 as uuidv4 } from "uuid";
 
+// import { Provider } from "react-redux";
+import { connect } from "react-redux";
+import { Add } from "./Actions/ContactListActions"
+
+
 class App extends React.Component {
   state = {
     List: [
@@ -137,5 +142,12 @@ class App extends React.Component {
     );
   }
 }
-
-export default App;
+const mapStateToProps = ({ CounterReducer }) => {
+  console.log(CounterReducer);
+  const { counter } = CounterReducer;
+  return { counter };
+};
+const mapDispatchToProps = {
+  // Plus, Minus
+};
+export default connect(mapStateToProps, mapDispatchToProps)(App);
